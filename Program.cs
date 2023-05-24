@@ -7,10 +7,10 @@
 
 using maxim_tasks;
 
-Console.WriteLine("¬ведите строку: ");
+Console.WriteLine("Enter the text: ");
 
 var text = Console.ReadLine()!;
 
 var result = Utils.EvenOddReverseText(text);
 
-Console.WriteLine($"–езультат:\n{text} -> {result}");
+Console.WriteLine($"Result:\n{text} -> {result}");
