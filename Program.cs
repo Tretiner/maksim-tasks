@@ -4,4 +4,13 @@
 
 //app.Run();
 
-Console.WriteLine("Hi");
+
+using maxim_tasks;
+
+Console.WriteLine("¬ведите строку: ");
+
+var text = Console.ReadLine()!;
+
+var result = Utils.EvenOddReverseText(text);
+
+Console.WriteLine($"–езультат:\n{text} -> {result}");
