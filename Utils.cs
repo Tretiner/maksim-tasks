@@ -9,6 +9,8 @@ public static class Utils
             return "";
         }
 
+        text.RequireEnglishLowercase();
+
         if (text.Length % 2 != 0)
         {
             return text.Reverse() + text;

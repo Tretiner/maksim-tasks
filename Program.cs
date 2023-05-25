@@ -9,7 +9,7 @@ using maxim_tasks;
 
 Console.WriteLine("Enter the text: ");
 
-var text = Console.ReadLine()!;
+var text = Console.ReadLine();
 
 var result = Utils.EvenOddReverseText(text);
 
