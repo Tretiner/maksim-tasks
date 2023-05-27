@@ -11,6 +11,6 @@ Console.WriteLine("Enter the text: ");
 
 var text = Console.ReadLine();
 
-var result = Utils.EvenOddReverseText(text);
+var result = EvenOddTextReverser.ReverseText(text);
 
-Console.WriteLine($"Result:\n{text} -> {result}");
+Console.WriteLine(result);
