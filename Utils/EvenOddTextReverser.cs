@@ -6,6 +6,14 @@ public record EvenOddTextReverserResult(
 	string MaxSubstringWithVerbsOnBothSides
 )
 {
+	public static EvenOddTextReverserResult Empty => new (
+		Text: "",
+		CharsOccurenceInfo: new Dictionary<char, int>(),
+		MaxSubstringWithVerbsOnBothSides: "",
+		SortedResultText: ""
+	);
+
+
 	public string FormattedCharsOccurenceInfo =>
 		string.Join(
 			"\n",
@@ -27,12 +35,7 @@ public static class EvenOddTextReverser
 	{
 		if (string.IsNullOrEmpty(text))
 		{
-			return new EvenOddTextReverserResult
-			(
-				Text: "",
-				CharsOccurenceInfo: new Dictionary<char, int>(),
-				MaxSubstringWithVerbsOnBothSides: ""
-			);
+			return EvenOddTextReverserResult.Empty;
 		}
 
 		text.RequireEnglishLowercase();
