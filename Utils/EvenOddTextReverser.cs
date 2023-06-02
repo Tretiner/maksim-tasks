@@ -1,3 +1,4 @@
+using maxim_tasks.Services.RandomNumberGeneratorService;
 using maxim_tasks.Utils.Sorters;
 
 namespace maxim_tasks;
@@ -6,14 +7,16 @@ public record EvenOddTextReverserResult(
 	string Text,
 	Dictionary<char, int> CharsOccurenceInfo,
 	string MaxSubstringWithVerbsOnBothSides,
-	string SortedResultText
+	string SortedResultText,
+	string CutText
 )
 {
 	public static EvenOddTextReverserResult Empty => new (
 		Text: "",
 		CharsOccurenceInfo: new Dictionary<char, int>(),
 		MaxSubstringWithVerbsOnBothSides: "",
-		SortedResultText: ""
+		SortedResultText: "",
+		CutText: ""
 	);
 
 
@@ -31,11 +34,19 @@ Chars occurences:
 {FormattedCharsOccurenceInfo}
 Max substring with verbs on both sides: {MaxSubstringWithVerbsOnBothSides}
 Sorted result text: {SortedResultText}
+Cut text: {CutText}";
 }
 
-public static class EvenOddTextReverser
+public class EvenOddTextReverser
 {
-	public static EvenOddTextReverserResult ReverseText(string? text, IStringSorter sorter)
+	private readonly IRandomNumberGeneratorService _randomNumberGenerator;
+
+	public EvenOddTextReverser(IRandomNumberGeneratorService randomNumberGenerator)
+	{
+		_randomNumberGenerator = randomNumberGenerator;
+	}
+
+	public async Task<EvenOddTextReverserResult> ReverseText(string? text, IStringSorter sorter)
 	{
 		if (string.IsNullOrEmpty(text))
 		{
@@ -79,13 +90,18 @@ public static class EvenOddTextReverser
 		}
 
 		var maxSubstringWithVerbsOnBothSides = endIndex != -1 ? resultText[startIndex..(endIndex + 1)] : "";
+
 		var sortedResultText = sorter.SortString(resultText);
+
+		var randNum = await _randomNumberGenerator.GetRandomNumber(0, resultText.Length - 1);
+		var cutString = resultText.RemoveCharAt(randNum);
 
 		return new EvenOddTextReverserResult(
 			Text: resultText,
 			CharsOccurenceInfo: charOccurenceInfo,
 			MaxSubstringWithVerbsOnBothSides: maxSubstringWithVerbsOnBothSides,
-			SortedResultText: sortedResultText
+			SortedResultText: sortedResultText,
+			CutText: cutString
 		);
 	}
 }
