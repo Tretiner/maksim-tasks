@@ -30,7 +30,7 @@ $@"Text: {Text}
 Chars occurences:
 {FormattedCharsOccurenceInfo}
 Max substring with verbs on both sides: {MaxSubstringWithVerbsOnBothSides}
-SortedResultText: {SortedResultText}";
+Sorted result text: {SortedResultText}
 }
 
 public static class EvenOddTextReverser
