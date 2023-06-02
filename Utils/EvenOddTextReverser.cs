@@ -1,9 +1,12 @@
+using maxim_tasks.Utils.Sorters;
+
 namespace maxim_tasks;
 
 public record EvenOddTextReverserResult(
 	string Text,
 	Dictionary<char, int> CharsOccurenceInfo,
-	string MaxSubstringWithVerbsOnBothSides
+	string MaxSubstringWithVerbsOnBothSides,
+	string SortedResultText
 )
 {
 	public static EvenOddTextReverserResult Empty => new (
@@ -26,12 +29,13 @@ public record EvenOddTextReverserResult(
 $@"Text: {Text}
 Chars occurences:
 {FormattedCharsOccurenceInfo}
-Max substring with verbs on both sides: {MaxSubstringWithVerbsOnBothSides}";
+Max substring with verbs on both sides: {MaxSubstringWithVerbsOnBothSides}
+SortedResultText: {SortedResultText}";
 }
 
 public static class EvenOddTextReverser
 {
-	public static EvenOddTextReverserResult ReverseText(string? text)
+	public static EvenOddTextReverserResult ReverseText(string? text, IStringSorter sorter)
 	{
 		if (string.IsNullOrEmpty(text))
 		{
@@ -75,11 +79,13 @@ public static class EvenOddTextReverser
 		}
 
 		var maxSubstringWithVerbsOnBothSides = endIndex != -1 ? resultText[startIndex..(endIndex + 1)] : "";
+		var sortedResultText = sorter.SortString(resultText);
 
 		return new EvenOddTextReverserResult(
 			Text: resultText,
 			CharsOccurenceInfo: charOccurenceInfo,
-			MaxSubstringWithVerbsOnBothSides: maxSubstringWithVerbsOnBothSides
+			MaxSubstringWithVerbsOnBothSides: maxSubstringWithVerbsOnBothSides,
+			SortedResultText: sortedResultText
 		);
 	}
 }
