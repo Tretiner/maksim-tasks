@@ -1,4 +1,5 @@
-﻿using maxim_tasks.Models.Queries;
+﻿using maxim_tasks.Models;
+using maxim_tasks.Models.Queries;
 using maxim_tasks.Utils.Sorters;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,8 +16,11 @@ public class TextController : ControllerBase
 		_evenOddTextReverser = evenOddTextReverser;
 	}
 
+	/// <response code="200">OK</response>
+	/// <response code="400">Text has non-english or non-lowered characters</response>
+	/// <response code="500">Unknown error</response>
 	[HttpGet("even_odd_reverse")]
-	public async Task<IActionResult> ReverseText([FromQuery] ReverseTextQuery query)
+	public async Task<ActionResult<EvenOddTextReverserResult>> EvenOddReverse([FromQuery] ReverseTextQuery query)
 	{
 		IStringSorter sorter = query.Sorter switch
 		{
@@ -30,13 +34,14 @@ public class TextController : ControllerBase
 			var result = await _evenOddTextReverser.ReverseText(query.Text, sorter);
 			return new JsonResult(result);
 		}
-		catch(RequireEnglishLowercaseException ex)
+		catch (RequireEnglishLowercaseException ex)
 		{
 			return BadRequest(ex.Message);
 		}
-		catch
+		catch (Exception ex)
 		{
-			return BadRequest();
+			Console.WriteLine(ex.Message);
+			return StatusCode(500, "Unknown error");
 		}
 	}
 }
