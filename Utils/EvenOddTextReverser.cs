@@ -1,41 +1,8 @@
+using maxim_tasks.Models;
 using maxim_tasks.Services.RandomNumberGeneratorService;
 using maxim_tasks.Utils.Sorters;
 
 namespace maxim_tasks;
-
-public record EvenOddTextReverserResult(
-	string Text,
-	Dictionary<char, int> CharsOccurenceInfo,
-	string MaxSubstringWithVerbsOnBothSides,
-	string SortedResultText,
-	string CutText
-)
-{
-	public static EvenOddTextReverserResult Empty => new (
-		Text: "",
-		CharsOccurenceInfo: new Dictionary<char, int>(),
-		MaxSubstringWithVerbsOnBothSides: "",
-		SortedResultText: "",
-		CutText: ""
-	);
-
-
-	public string FormattedCharsOccurenceInfo =>
-		string.Join(
-			"\n",
-			CharsOccurenceInfo
-				.OrderByDescending(kv => kv.Value)
-				.Select(kv => $"{kv.Key}: {kv.Value}")
-		);
-
-	public override string ToString() =>
-$@"Text: {Text}
-Chars occurences:
-{FormattedCharsOccurenceInfo}
-Max substring with verbs on both sides: {MaxSubstringWithVerbsOnBothSides}
-Sorted result text: {SortedResultText}
-Cut text: {CutText}";
-}
 
 public class EvenOddTextReverser
 {
