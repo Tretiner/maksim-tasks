@@ -9,19 +9,28 @@ namespace maxim_tasks.Controllers;
 [ApiController]
 public class TextController : ControllerBase
 {
+	private readonly IConfiguration _config;
 	private readonly EvenOddTextReverser _evenOddTextReverser;
 
-	public TextController(EvenOddTextReverser evenOddTextReverser)
+	public TextController(IConfiguration config, EvenOddTextReverser evenOddTextReverser)
 	{
+		_config = config;
 		_evenOddTextReverser = evenOddTextReverser;
 	}
 
 	/// <response code="200">OK</response>
-	/// <response code="400">Text has non-english or non-lowered characters</response>
+	/// <response code="400">Text has non-english or non-lowered characters or blacklisted</response>
 	/// <response code="500">Unknown error</response>
 	[HttpGet("even_odd_reverse")]
 	public async Task<ActionResult<EvenOddTextReverserResult>> EvenOddReverse([FromQuery] ReverseTextQuery query)
 	{
+		var blackList = _config.GetSection("AppConfig:Settings:BlackList").Get<List<string>>();
+
+		if (blackList.Contains(query.Text) == true)
+		{
+			return BadRequest($"{query.Text} is blacklisted");
+		}
+
 		IStringSorter sorter = query.Sorter switch
 		{
 			'q' => new QuickSorter(),
