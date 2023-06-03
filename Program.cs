@@ -1,35 +1,26 @@
-//var builder = WebApplication.CreateBuilder(args);
-
-//var app = builder.Build();
-
-//app.Run();
-
-
 using maxim_tasks;
 using maxim_tasks.Services.RandomNumberGeneratorService;
-using maxim_tasks.Utils.Sorters;
 
-Console.WriteLine("Enter the text: ");
+var builder = WebApplication.CreateBuilder(args);
 
-var text = Console.ReadLine();
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddSwaggerGen();
 
-Console.WriteLine(
-@"Enter preffered sort algorithm (default: QuickSort):
-  't' -> TreeSort
-  'q' -> QuickSort");
+// Custom services
+builder.Services.AddSingleton<IRandomNumberGeneratorService, RandomNumberGeneratorService>();
+builder.Services.AddSingleton<EvenOddTextReverser>();
 
-var input = Console.ReadLine()?.Trim();
-IStringSorter sorter = input switch
+
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
 {
-	"q" => new QuickSorter(),
-	"t" => new TreeSorter(),
-	_ => new QuickSorter()
-};
+	app.UseDeveloperExceptionPage();
+	//app.UseSwagger();
+	//app.UseSwaggerUI();
+}
 
-var randomNumbersGeneratorService = new RandomNumberGeneratorService();
+app.MapControllers();
 
-var evenOddTextReverser = new EvenOddTextReverser(randomNumbersGeneratorService);
-
-var result = await evenOddTextReverser.ReverseText(text, sorter);
-
-Console.WriteLine(result);
+app.Run();
