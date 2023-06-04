@@ -58,6 +58,13 @@ public class TreeSorter : IStringSorter
 {
 	public string SortString(string text)
 	{
+		ArgumentNullException.ThrowIfNull(text);
+
+		if (string.IsNullOrWhiteSpace(text))
+		{
+			return text;
+		}
+
 		Span<char> sp = text.ToCharArray().AsSpan();
 		return TreeSort(sp).ToString();
 	}
