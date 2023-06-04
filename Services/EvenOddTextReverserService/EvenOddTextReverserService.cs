@@ -24,41 +24,11 @@ public class EvenOddTextReverserService: IEvenOddTextReverserService
 
         sorter ??= new QuickSorter();
 
-        string resultText;
-        if (text.Length % 2 != 0)
-        {
-            resultText = text.Reverse() + text;
-        }
-        else
-        {
-            var halfTextLen = (text.Length + 1) / 2;
-            resultText = text[..halfTextLen].Reverse() + text[halfTextLen..].Reverse();
-        }
+		var resultText = GetReversedText(text);
 
-        var charOccurenceInfo = new Dictionary<char, int>();
+		var charOccurenceInfo = GetCharOccurenceInfo(resultText);
 
-        var englishVerbs = "aeiouy";
-        int startIndex = -1, endIndex = -1;
-        for (int i = 0; i < resultText.Length; i++)
-        {
-            var ch = resultText[i];
-
-            charOccurenceInfo.TryGetValue(ch, out var charCount);
-            charOccurenceInfo[ch] = charCount + 1;
-
-            if (!englishVerbs.Contains(ch)) continue;
-
-            if (startIndex == -1)
-            {
-                startIndex = i;
-            }
-            else
-            {
-                endIndex = i;
-            }
-        }
-
-        var maxSubstringWithVerbsOnBothSides = endIndex != -1 ? resultText[startIndex..(endIndex + 1)] : "";
+        var maxSubstringWithVerbsOnBothSides = GetMaxSubstringWithVerbsOnBothSides(resultText);
 
         var sortedResultText = sorter.SortString(resultText);
 
@@ -73,4 +43,41 @@ public class EvenOddTextReverserService: IEvenOddTextReverserService
             CutText: cutString
         );
     }
+
+	private static string GetReversedText(string text)
+	{
+		if (text.Length % 2 != 0)
+		{
+			return text.Reverse() + text;
+		}
+		var halfTextLen = (text.Length + 1) / 2;
+		return text[..halfTextLen].Reverse() + text[halfTextLen..].Reverse();
+	}
+
+	private static Dictionary<char, int> GetCharOccurenceInfo(string text) =>
+		text.GroupBy(ch => ch)
+			.ToDictionary(kv => kv.Key, kv => kv.Count());
+
+	private static string GetMaxSubstringWithVerbsOnBothSides(string text)
+	{
+		var englishVerbs = "aeiouy";
+		int startIndex = -1, endIndex = -1;
+		for (int i = 0; i < text.Length; i++)
+		{
+			var ch = text[i];
+
+			if (!englishVerbs.Contains(ch)) continue;
+
+			if (startIndex == -1)
+			{
+				startIndex = i;
+			}
+			else
+			{
+				endIndex = i;
+			}
+		}
+
+		return endIndex != -1 ? text[startIndex..(endIndex + 1)] : "";
+	}
 }
