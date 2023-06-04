@@ -1,6 +1,7 @@
 using maxim_tasks.Models;
 using maxim_tasks.Services.RandomNumberGeneratorService;
 using maxim_tasks.Utils.Sorters;
+using System.Collections.Immutable;
 
 namespace maxim_tasks.Services.EvenOddTextReverserService;
 
@@ -54,9 +55,9 @@ public class EvenOddTextReverserService: IEvenOddTextReverserService
 		return text[..halfTextLen].Reverse() + text[halfTextLen..].Reverse();
 	}
 
-	private static Dictionary<char, int> GetCharOccurenceInfo(string text) =>
+	private static ImmutableDictionary<char, int> GetCharOccurenceInfo(string text) =>
 		text.GroupBy(ch => ch)
-			.ToDictionary(kv => kv.Key, kv => kv.Count());
+			.ToImmutableDictionary(kv => kv.Key, kv => kv.Count());
 
 	private static string GetMaxSubstringWithVerbsOnBothSides(string text)
 	{

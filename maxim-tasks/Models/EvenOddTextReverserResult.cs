@@ -1,10 +1,11 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Immutable;
+using System.Text.Json.Serialization;
 
 namespace maxim_tasks.Models;
 
 public record EvenOddTextReverserResult(
 	string Text,
-	Dictionary<char, int> CharsOccurenceInfo,
+	ImmutableDictionary<char, int> CharsOccurenceInfo,
 	string MaxSubstringWithVerbsOnBothSides,
 	string SortedResultText,
 	string CutText
@@ -13,7 +14,7 @@ public record EvenOddTextReverserResult(
 	[JsonIgnore]
 	public static EvenOddTextReverserResult Empty => new(
 		Text: "",
-		CharsOccurenceInfo: new Dictionary<char, int>(),
+		CharsOccurenceInfo: ImmutableDictionary<char, int>.Empty,
 		MaxSubstringWithVerbsOnBothSides: "",
 		SortedResultText: "",
 		CutText: ""
