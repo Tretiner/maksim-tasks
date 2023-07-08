@@ -4,6 +4,11 @@ namespace maxim_tasks;
 
 public static class Extensions
 {
+    public static string RemoveCharAt(this string text, int index)
+    {
+        return text.Remove(index, 1);
+    }
+
     public static string Reverse(this string text)
     {
         var chars = text.ToCharArray();

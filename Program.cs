@@ -6,6 +6,7 @@
 
 
 using maxim_tasks;
+using maxim_tasks.Services.RandomNumberGeneratorService;
 using maxim_tasks.Utils.Sorters;
 
 Console.WriteLine("Enter the text: ");
@@ -25,6 +26,10 @@ IStringSorter sorter = input switch
 	_ => new QuickSorter()
 };
 
-var result = EvenOddTextReverser.ReverseText(text, sorter);
+var randomNumbersGeneratorService = new RandomNumberGeneratorService();
+
+var evenOddTextReverser = new EvenOddTextReverser(randomNumbersGeneratorService);
+
+var result = await evenOddTextReverser.ReverseText(text, sorter);
 
 Console.WriteLine(result);
