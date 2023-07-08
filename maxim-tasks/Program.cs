@@ -1,4 +1,4 @@
-using maxim_tasks;
+using maxim_tasks.Services.EvenOddTextReverserService;
 using maxim_tasks.Services.RandomNumberGeneratorService;
 using System.Reflection;
 
@@ -12,8 +12,9 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 // Custom services
-builder.Services.AddSingleton<IRandomNumberGeneratorService, RandomNumberGeneratorService>();
-builder.Services.AddSingleton<EvenOddTextReverser>();
+builder.Services
+	.AddSingleton<IRandomNumberGeneratorService, RandomNumberGeneratorService>()
+	.AddSingleton<IEvenOddTextReverserService, EvenOddTextReverserService>();
 
 
 var app = builder.Build();

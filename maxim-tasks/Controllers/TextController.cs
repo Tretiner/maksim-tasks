@@ -1,5 +1,6 @@
 ﻿using maxim_tasks.Models;
 using maxim_tasks.Models.Queries;
+using maxim_tasks.Services.EvenOddTextReverserService;
 using maxim_tasks.Utils.Sorters;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,11 +11,11 @@ namespace maxim_tasks.Controllers;
 public class TextController : ControllerBase
 {
 	private readonly IConfiguration _config;
-	private readonly EvenOddTextReverser _evenOddTextReverser;
+	private readonly IEvenOddTextReverserService _evenOddTextReverser;
 
 	private readonly SemaphoreSlim _requestsLimitSemaphore;
 
-	public TextController(IConfiguration config, EvenOddTextReverser evenOddTextReverser)
+	public TextController(IConfiguration config, IEvenOddTextReverserService evenOddTextReverser)
 	{
 		_config = config;
 		_evenOddTextReverser = evenOddTextReverser;
