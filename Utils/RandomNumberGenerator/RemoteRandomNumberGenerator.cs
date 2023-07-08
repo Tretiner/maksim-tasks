@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using maxim_tasks.Models.Responses;
+using System.Text;
 
 namespace maxim_tasks.Utils.RandomNumberGenerator;
 
@@ -40,22 +41,10 @@ public static class RemoteRandomNumberGenerator
 
 		var randomNumParsedResponse = await randomNumRequest.Content.ReadFromJsonAsync<RandomNumberResponse>();
 
-		var randomNum = randomNumParsedResponse.result.random.data[0];
+		var randomNum = randomNumParsedResponse.Result.Random.Data[0];
 
 		return randomNum;
 	}
 }
 
 
-// Classes for json parsing
-internal sealed record RandomNumberResponse(
-	ResultPartResponse result
-);
-
-internal sealed record ResultPartResponse(
-	RandomPartResponse random
-);
-
-internal sealed record RandomPartResponse(
-	int[] data
-);
